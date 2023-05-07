@@ -1,0 +1,5 @@
+name: Bloques Segura Viudas
+type: module
+description: 'Módulo para implementar un sistema de bloques para Segura Viudas.'
+package: Bibiai
+core_version_requirement: ^9 || ^10
