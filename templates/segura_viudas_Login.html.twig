@@ -1,0 +1,28 @@
+<!-- login -->
+<section id="log-in" class="nobgmobile" style="background-image: url('{{ file_url('/images/login_bg.svg') }}'); background-size: contain; background-repeat: no-repeat; ">
+    <div class="block full row mcolumn">
+        <div class="block row">
+            {{ page.login }}
+            <div class="block full column nomobile">
+    <img src="{{ file_url('/images/login-decoration.svg') }}" width="25px">
+    </div>
+    <div class="block full column">
+        <h2 style="margin-bottom: 1em;">{{ "¿Ya estás registrado?" | t }}</h2>
+        <form>
+            <label>CIF</label><br>
+            <input type="text"><br>
+            <p class="input-info">{{ "Introduce el CIF sin espacios ni caractéres especiales y en mayúsculas. Ejemplo 43414180A" | t }}</p><br>
+
+            <label>Contraseña</label><br>
+            <input type="password" placeholder=""><br>
+
+            <input type="submit" value="Entrar">
+        </form>
+    </div>
+        </div>
+        <div style="margin-top:2em;" class="block column bottom center right">
+            <img class="w-80" src="{{ file_url('/images/login_img.png') }}">
+        </div>
+    </div>
+</section>
+<!-- login -->

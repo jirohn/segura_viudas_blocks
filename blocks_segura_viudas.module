@@ -1,0 +1,31 @@
+<?php
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_theme().
+ */
+function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
+  return [
+    'segura_viudas_header' => [
+      'variables' => [
+      ],
+      'template' => 'segura_viudas_header',
+      'content' => 'Este es el contenido de mi bloque personalizado.',
+      'module_path' => NULL,
+    ],
+    'segura_viudas_banner' => [
+      'variables' => [
+      ],
+      'template' => 'segura_viudas_banner',
+      'content' => 'Este es el contenido de mi bloque personalizado.'
+    ],
+    'segura_viudas_login' => [
+      'variables' => [
+      ],
+      'template' => 'segura_viudas_login',
+      'content' => 'Este es el contenido de mi bloque personalizado.'
+    ],
+  ];
+}
+

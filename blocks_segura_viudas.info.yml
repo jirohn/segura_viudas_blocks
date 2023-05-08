@@ -1,0 +1,5 @@
+name: 'Blocks Segura Viudas'
+type: module
+description: 'un modulo de bloques para Segura Viudas.'
+core_version_requirement: ^9 || ^10
+package: 'Bibiai Nateevo'
