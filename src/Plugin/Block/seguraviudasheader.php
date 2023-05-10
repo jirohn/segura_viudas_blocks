@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\segura_viudas_blocks\Plugin\Block;
+namespace Drupal\blocks_segura_viudas\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 
@@ -8,19 +8,19 @@ use Drupal\Core\Block\BlockBase;
  * Provides a custom block.
  *
  * @Block(
- *   id = "my_custom_block",
- *   admin_label = @Translation("My Custom Block"),
+ *   id = "segura_viudas_header",
+ *   admin_label = @Translation("Segura Viudas Header"),
  *   category = @Translation("Custom")
  * )
  */
-class seguraviudasheader extends BlockBase {
+class SeguraViudasHeader extends BlockBase {
 
   /**
    * {@inheritdoc}
    */
   public function build() {
     return [
-      '#theme' => 'segura-viudas-blocks-header',
+      '#theme' => 'segura_viudas_header',
       '#content' => 'Este es el contenido de mi bloque personalizado.',
     ];
   }

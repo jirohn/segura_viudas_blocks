@@ -1,5 +1,0 @@
-name: Bloques Segura Viudas
-type: module
-description: 'Módulo para implementar un sistema de inicio de sesión seguro para viudas.'
-package: Bibiai
-core_version_requirement: ^9 || ^10

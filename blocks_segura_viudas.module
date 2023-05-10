@@ -11,8 +11,13 @@ function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
       'variables' => [
       ],
       'template' => 'segura_viudas_header',
-      'content' => 'Este es el contenido de mi bloque personalizado.',
-      'module_path' => NULL,
+      'content' => 'Este es el contenido de mi bloque personalizado.'
+    ],
+    'segura_viudas_headerlogged' => [
+      'variables' => [
+      ],
+      'template' => 'segura_viudas_headerlogged',
+      'content' => 'Este es el contenido de mi bloque personalizado.'
     ],
     'segura_viudas_banner' => [
       'variables' => [
@@ -26,6 +31,29 @@ function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
       'template' => 'segura_viudas_login',
       'content' => 'Este es el contenido de mi bloque personalizado.'
     ],
+    'segura_viudas_help' => [
+      'variables' => [
+      ],
+      'template' => 'segura_viudas_help',
+      'content' => 'Este es el contenido de mi bloque personalizado.'
+    ],
+    'segura_viudas_footer' => [
+      'variables' => [
+      ],
+      'template' => 'segura_viudas_footer',
+      'content' => 'Este es el contenido de mi bloque personalizado.'
+    ],
+    'segura_viudas_appointment' => [
+      'variables' => [
+      ],
+      'template' => 'segura_viudas_appointment',
+      'content' => 'Este es el contenido de mi bloque personalizado.'
+    ],
+    'segura_viudas_profile' => [
+      'variables' => [
+      ],
+      'template' => 'segura_viudas_profile',
+      'content' => 'Este es el contenido de mi bloque personalizado.'
+    ],
   ];
 }
-
