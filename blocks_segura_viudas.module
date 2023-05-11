@@ -26,10 +26,8 @@ function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
       'content' => 'Este es el contenido de mi bloque personalizado.'
     ],
     'segura_viudas_login' => [
-      'variables' => [
-      ],
       'template' => 'segura_viudas_login',
-      'content' => 'Este es el contenido de mi bloque personalizado.'
+      'variables' => ['login_form' => NULL],
     ],
     'segura_viudas_help' => [
       'variables' => [

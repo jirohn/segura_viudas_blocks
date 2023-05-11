@@ -1,0 +1,12 @@
+services:
+  blocks_segura_viudas.login_form:
+    class: Drupal\blocks_segura_viudas\Form\LoginForm
+    arguments: ['@authentication.manager']
+    tags:
+      - { name: form, id: Drupal\blocks_segura_viudas\Form\LoginForm }
+services:
+  blocks_segura_viudas.segura_viudas_redirect_subscriber:
+    class: Drupal\blocks_segura_viudas\EventSubscriber\SeguraViudasRedirectSubscriber
+    arguments: ['@current_user']
+    tags:
+      - { name: event_subscriber }

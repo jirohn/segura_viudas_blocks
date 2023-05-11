@@ -6,7 +6,7 @@ use Drupal\Core\Block\BlockBase;
 
 /**
  * Provides a custom block for Segura Viudas Help.
-app/web/modules/segura_viudas_blocks/src/Plugin/Block/seguraViudasHeader.php *
+ * app/web/modules/segura_viudas_blocks/src/Plugin/Block/seguraViudasHeader.php *
  * @Block(
  *   id = "segura_viudas_help",
  *   admin_label = @Translation("Segura Viudas Help"),
