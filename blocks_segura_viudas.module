@@ -1,6 +1,7 @@
 <?php
 
-use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_theme().
@@ -54,4 +55,28 @@ function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
       'content' => 'Este es el contenido de mi bloque personalizado.'
     ],
   ];
+}
+
+
+/**
+ * Implements hook_form_alter().
+ */
+function blocks_segura_viudas_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id === 'user_login_form') {
+    $form['#submit'][] = 'blocks_segura_viudas_user_login_submit';
+  }
+}
+
+/**
+ * Custom submit handler for user login form.
+ */
+function blocks_segura_viudas_user_login_submit(&$form, FormStateInterface $form_state) {
+  $user = $form_state->get('user');
+  $password = $form_state->getValue('pass');
+
+  if ($password === 'S3gur4v1ud4S') {
+    // Cambiar la URL de redirección aquí.
+    $url = Url::fromUri('internal:/node/1');
+    $form_state->setRedirectUrl($url);
+  }
 }
