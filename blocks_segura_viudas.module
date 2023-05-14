@@ -63,7 +63,22 @@ function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
  */
 function blocks_segura_viudas_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if ($form_id === 'user_login_form') {
+    // Agregar el manipulador personalizado de envío del formulario de inicio de sesión.
     $form['#submit'][] = 'blocks_segura_viudas_user_login_submit';
+
+    // Cambiar el título del campo de nombre de usuario a CIF.
+    if (isset($form['name']['#title'])) {
+      $form['name']['#title'] = t('CIF');
+    } elseif (isset($form['name']['name']['#title'])) {
+      $form['name']['name']['#title'] = t('CIF');
+    }
+
+    // Cambiar el texto de descripción del campo de nombre de usuario.
+    if (isset($form['name']['#description'])) {
+      $form['name']['#description'] = t('Introduzca su CIF.');
+    } elseif (isset($form['name']['name']['#description'])) {
+      $form['name']['name']['#description'] = t('Introduzca su CIF.');
+    }
   }
 }
 

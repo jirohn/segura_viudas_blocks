@@ -1,7 +1,7 @@
 services:
   blocks_segura_viudas.login_form:
     class: Drupal\blocks_segura_viudas\Form\LoginForm
-    arguments: ['@authentication.manager']
+    arguments: ['@authentication_collector']
     tags:
       - { name: form, id: Drupal\blocks_segura_viudas\Form\LoginForm }
 
