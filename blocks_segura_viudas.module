@@ -3,20 +3,7 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function cif_login_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Cambiar el título del campo de nombre de usuario a CIF.
-  $form['name']['#title'] = t('CIF');
 
-  // Cambiar el texto de descripción del campo de nombre de usuario.
-  $form['name']['#description'] = t('Introduzca su CIF.');
-}
-
-/**
- * Implements hook_theme().
- */
 function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
   return [
     'segura_viudas_header' => [
@@ -99,11 +86,16 @@ function blocks_segura_viudas_form_alter(&$form, FormStateInterface $form_state,
 
     // Cambiar el texto de descripción del campo de nombre de usuario.
     if (isset($form['name']['#description'])) {
-      $form['name']['#description'] = t('Introduïu el vostre CIF.');
+      $form['name']['#description'] = t('Introdueix el CIF, sense espais ni caràcters especials, en majúscules. Exemple: 43414180A.');
     } elseif (isset($form['name']['name']['#description'])) {
-      $form['name']['name']['#description'] = t('Introduïu el vostre CIF.');
+      $form['name']['name']['#description'] = t('Introdueix el CIF, sense espais ni caràcters especials, en majúscules. Exemple: 43414180A.');
     }
-    
+    // Cambiar el texto de descripción del campo de password.
+    if (isset($form['pass']['#description'])) {
+      $form['pass']['#description'] = t('');
+    } elseif (isset($form['pass']['pass1']['#description'])) {
+      $form['pass']['pass1']['#description'] = t('');
+    }
   }
 }
 
