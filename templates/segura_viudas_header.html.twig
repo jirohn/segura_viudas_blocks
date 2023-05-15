@@ -2,19 +2,36 @@
 <section class="nospace">
     <div class="block topbar full right">
         <ul>
-            <li>{{ "Et cal ajut?" | t }} {{ 'Truca al' | t }} <b>938 000 000</b></li>
-            <li>{{ "Idioma" | t }}</li>
+            <li class="nomobile">{{ "Et cal ajut?" | t }} {{ 'Truca al' | t }} <b style="text-shadow: 0 0 black;">938 000 000</b></li>
+            <li class="dropdown">
+                <span>{{ "Idioma " | t }}<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M6 9l6 6l6 -6" />
+                    </svg></span>
+                <div class="dropdown-content">
+                        <a href="#" onclick="changeLanguage('ca')"><em class="icon-crest drop"></em> Català</a>
+                        <a href="#" onclick="changeLanguage('es')"><em class="icon-crest drop"></em> Castellano</a>
+                    </div>
+                </li>
         </ul>
     </div>
 </section>
-<section style="padding:1.5em 0em;margin-bottom:5em;" class="header nospace">
+<section class="header nospace">
     <div class="block full space-between mrow">
         <div class="logo">
-            <a href="/inicio"><img src="{{ file_url('modules/segura_viudas_blocks/images/logo_SV.png') }}"></a>
+            <a href="{{ "/ca/inicio" | t }}"><img src="{{ file_url('modules/nateevo/segura_viudas_blocks/images/logo_SV.png') }}"></a>
         </div>
         <div>
-            <a href="#log-in">{{ "Iniciar sessió" | t }}</a>
+            <a class="main-link" href="#log-in">{{ "Iniciar sessió" | t }}</a>
         </div>
     </div>
 </section>
 </div>
+
+<script>
+function changeLanguage(lang) {
+  const currentUrl = window.location.href;
+  const newUrl = currentUrl.replace(/\/(es|ca)\//, '/' + lang + '/');
+  window.location.href = newUrl;
+}
+</script>

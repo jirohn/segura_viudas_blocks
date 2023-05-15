@@ -13,7 +13,7 @@ app/web/modules/segura_viudas_blocks/src/Plugin/Block/seguraViudasHeader.php *
  *   category = @Translation("Custom")
  * )
  */
-class SeguraViudasHeaderLogged extends BlockBase {
+class SeguraViudasHeaderlogged extends BlockBase {
 
   /**
    * {@inheritdoc}

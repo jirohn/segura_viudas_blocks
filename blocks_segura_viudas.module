@@ -4,6 +4,17 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cif_login_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Cambiar el título del campo de nombre de usuario a CIF.
+  $form['name']['#title'] = t('CIF');
+
+  // Cambiar el texto de descripción del campo de nombre de usuario.
+  $form['name']['#description'] = t('Introduzca su CIF.');
+}
+
+/**
  * Implements hook_theme().
  */
 function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
@@ -54,9 +65,22 @@ function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
       'template' => 'segura_viudas_profile',
       'content' => 'Este es el contenido de mi bloque personalizado.'
     ],
+    'segura_viudas_newpassword' => [
+      'variables' => [
+      ],
+      'template' => 'segura_viudas_newpassword',
+      'content' => 'Este es el contenido de mi bloque personalizado.'
+    ],
+    'segura_viudas_change_password' => [
+      'template' => 'segura_viudas_change_password',
+      'variables' => ['change_password_form' => NULL],
+    ],
+    'segura_viudas_changepassword' => [
+      'template' => 'segura_viudas_changepassword',
+      'variables' => ['change_password_form' => NULL],
+    ],
   ];
 }
-
 
 /**
  * Implements hook_form_alter().
@@ -79,6 +103,7 @@ function blocks_segura_viudas_form_alter(&$form, FormStateInterface $form_state,
     } elseif (isset($form['name']['name']['#description'])) {
       $form['name']['name']['#description'] = t('Introduïu el vostre CIF.');
     }
+    
   }
 }
 
@@ -91,7 +116,8 @@ function blocks_segura_viudas_user_login_submit(&$form, FormStateInterface $form
 
   if ($password === 'S3gur4v1ud4S') {
     // Cambiar la URL de redirección aquí.
-    $url = Url::fromUri('internal:/node/1');
+    $url = Url::fromUri('internal:/nova-contrasenya');
     $form_state->setRedirectUrl($url);
   }
 }
+

@@ -1,0 +1,34 @@
+<!-- Login -->
+<section id="log-in" class="nobgmobile">
+    <div class="block full row mcolumn">
+        <div class="block row">
+            <div style="width: 20%; transform: translateY(300px);" class="block full column nomobile">
+    <img src="{{ file_url('modules/nateevo/segura_viudas_blocks/images/login-decoration.svg') }}" width="25px">
+    </div>
+    <div class="block full column center segura-viudas-login">
+        <h2 style="margin-bottom: 1em;">{{ "JA HI ESTÀS REGISTRAT?" | t }}</h2>
+        {{ login_form }}
+    </div>
+        </div>
+        <div style="margin-top:2em;" class="block column bottom center right">
+            <img class="w-80" src="{{ file_url('modules/nateevo/segura_viudas_blocks/images/login-img.png') }}">
+        </div>
+    </div>
+</section>
+<!-- Login -->
+
+<script>
+    function togglePassword(inputId, toggleId) {
+        const input = document.getElementById(inputId);
+        const toggle = document.getElementById(toggleId);
+        const type = input.getAttribute('type');
+
+        if (type === 'password') {
+            input.setAttribute('type', 'text');
+            toggle.style.opacity = '1';
+        } else {
+            input.setAttribute('type', 'password');
+            toggle.style.opacity = '0.5';
+        }
+    }
+</script>
