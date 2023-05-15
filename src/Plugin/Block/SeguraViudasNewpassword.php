@@ -15,14 +15,12 @@ app/web/modules/segura_viudas_blocks/src/Plugin/Block/seguraViudasHeader.php *
  */
 class SeguraViudasNewpassword extends BlockBase {
 
-  /**
-   * {@inheritdoc}
-   */
-  public function build() {
-    return [
-      '#theme' => 'segura_viudas_newpassword',
-      '#content' => 'Este es el contenido de mi bloque personalizado.'
-    ];
-  }
 
+public function build() {
+  $form = \Drupal::formBuilder()->getForm('Drupal\blocks_segura_viudas\Form\ChangePasswordForm');
+  return [
+    '#theme' => 'segura_viudas_newpassword',
+    '#change_password_form' => $form,
+  ];
+}  
 }

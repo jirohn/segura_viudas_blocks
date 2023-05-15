@@ -10,19 +10,16 @@ function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
       'variables' => [
       ],
       'template' => 'segura_viudas_header',
-      'content' => 'Este es el contenido de mi bloque personalizado.'
     ],
     'segura_viudas_headerlogged' => [
       'variables' => [
       ],
       'template' => 'segura_viudas_headerlogged',
-      'content' => 'Este es el contenido de mi bloque personalizado.'
     ],
     'segura_viudas_banner' => [
       'variables' => [
       ],
       'template' => 'segura_viudas_banner',
-      'content' => 'Este es el contenido de mi bloque personalizado.'
     ],
     'segura_viudas_login' => [
       'template' => 'segura_viudas_login',
@@ -32,31 +29,26 @@ function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
       'variables' => [
       ],
       'template' => 'segura_viudas_help',
-      'content' => 'Este es el contenido de mi bloque personalizado.'
     ],
     'segura_viudas_footer' => [
       'variables' => [
       ],
       'template' => 'segura_viudas_footer',
-      'content' => 'Este es el contenido de mi bloque personalizado.'
     ],
     'segura_viudas_appointment' => [
       'variables' => [
       ],
       'template' => 'segura_viudas_appointment',
-      'content' => 'Este es el contenido de mi bloque personalizado.'
     ],
     'segura_viudas_profile' => [
       'variables' => [
+        'user' => NULL,
       ],
       'template' => 'segura_viudas_profile',
-      'content' => 'Este es el contenido de mi bloque personalizado.'
     ],
     'segura_viudas_newpassword' => [
-      'variables' => [
-      ],
+      'variables' => ['change_password_form' => NULL],
       'template' => 'segura_viudas_newpassword',
-      'content' => 'Este es el contenido de mi bloque personalizado.'
     ],
     'segura_viudas_change_password' => [
       'template' => 'segura_viudas_change_password',
@@ -84,18 +76,27 @@ function blocks_segura_viudas_form_alter(&$form, FormStateInterface $form_state,
       $form['name']['name']['#title'] = t('CIF');
     }
 
-    // Cambiar el texto de descripción del campo de nombre de usuario.
+    // Cambiar el texto de descripción del campo de nombre de usuario y agregar la clase CSS.
     if (isset($form['name']['#description'])) {
       $form['name']['#description'] = t('Introdueix el CIF, sense espais ni caràcters especials, en majúscules. Exemple: 43414180A.');
+      $form['name']['#attributes']['class'][] = 'input-info';
     } elseif (isset($form['name']['name']['#description'])) {
       $form['name']['name']['#description'] = t('Introdueix el CIF, sense espais ni caràcters especials, en majúscules. Exemple: 43414180A.');
+      $form['name']['name']['#attributes']['class'][] = 'input-info';
     }
+
     // Cambiar el texto de descripción del campo de password.
     if (isset($form['pass']['#description'])) {
       $form['pass']['#description'] = t('');
     } elseif (isset($form['pass']['pass1']['#description'])) {
       $form['pass']['pass1']['#description'] = t('');
     }
+    // Cambiar el texto del botón de envío.
+    if (isset($form['actions']['submit']['#value'])) {
+      $form['actions']['submit']['#value'] = t('Accedir');
+}
+    // Añade el validador personalizado al formulario.
+    array_unshift($form['#validate'], 'blocks_segura_viudas_user_login_validate');
   }
 }
 
@@ -109,7 +110,30 @@ function blocks_segura_viudas_user_login_submit(&$form, FormStateInterface $form
   if ($password === 'S3gur4v1ud4S') {
     // Cambiar la URL de redirección aquí.
     $url = Url::fromUri('internal:/nova-contrasenya');
-    $form_state->setRedirectUrl($url);
+  } else {
+    // Establece la URL de redirección para otros casos.
+    $url = Url::fromUri('internal:/inici');
   }
+
+  $form_state->setRedirectUrl($url);
 }
 
+/**
+ * Custom validator for user login form.
+ */
+function blocks_segura_viudas_user_login_validate(&$form, FormStateInterface $form_state) {
+  $cif = $form_state->getValue('name');
+  
+  // Busca al usuario por field_cif_empresa.
+  $users = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties([
+    'field_cif_empresa' => $cif,
+  ]);
+
+  if ($users) {
+    $account = reset($users);
+    // Establece el nombre de usuario en el formulario para que el validador predeterminado de Drupal pueda manejarlo.
+    $form_state->setValue('name', $account->getAccountName());
+  } else {
+    $form_state->setErrorByName('name', t('No se encontró un usuario con ese CIF.'));
+  }
+}

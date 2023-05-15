@@ -25,7 +25,7 @@ class ChangePasswordForm extends FormBase {
         'class' => ['password-input'],
       ],
       '#prefix' => '<div class="password-container">',
-      '#suffix' => '<span class="password-toggle" id="current-password-toggle" onclick="togglePassword(\'current-password\', \'current-password-toggle\')"></span></div>',
+      '#suffix' => '</div>',
     ];
   
     $form['new_password'] = [
@@ -38,9 +38,10 @@ class ChangePasswordForm extends FormBase {
         'class' => ['password-input'],
       ],
       '#prefix' => '<div class="password-container">',
-      '#suffix' => '<span class="password-toggle" id="new-password-toggle" onclick="togglePassword(\'new-password\', \'new-password-toggle\')"></span></div><br><br>',
+      '#suffix' => '</div><br><br>',
     ];
-  
+    $this->messenger()->addMessage($this->t('La contraseña ha sido cambiada exitosamente.'));
+
     $form['cancel_button'] = [
       '#type' => 'markup',
       '#markup' => '<a href="' . $this->t('/ca/inici') . '" class="secondary-sub nomobile" type="submit"><em class="icon-crest"></em>' . $this->t('CANCEL·LAR') . '</a>',
