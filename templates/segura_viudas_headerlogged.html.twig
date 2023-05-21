@@ -1,0 +1,140 @@
+<div class="sv-header-logged-block">
+<section class="nospace">
+    <div class="block topbar full right">
+        <ul>
+            <li class="nomobile">{{ "Et cal ajut?" | t }} {{ 'Truca al' | t }} <b style="text-shadow: 0 0 black;">938 917 070</b></li>
+            <li class="dropdown bottom right">
+                <span>{{ "Idioma " | t }}<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M6 9l6 6l6 -6" />
+                    </svg></span>
+                <div class="dropdown-content">
+                        <a href="#" onclick="changeLanguage('ca')"><em class="icon-crest drop"></em> Català</a>
+                        <a href="#" onclick="changeLanguage('es')"><em class="icon-crest drop"></em> Castellano</a>
+                    </div>
+                </li>
+        </ul>
+    </div>
+</section>
+<section class="header nospace">
+    <div id="menu" class="block full space-between mrow">
+        <div class="logo">
+            <a href="{{ "/ca/inicio" | t }}"><img style="z-index: 10;" src="{{ file_url('modules/nateevo/segura_viudas_blocks/images/logo_SV.png') }}"></a>
+        </div>
+        <div>
+            <a class="nomobile main-link" href="{{ "/ca/proveedores/solicitar-cita" | t }}">{{ "Documentació i cita de contracte" | t }}</a>
+            <div class="dropdown nomobile">
+                <a class="nomobile main-link" href="{{ "/ca/dades" | t }}" data-disable="true">{{ "El meu perfil" | t }} <svg style="margin-top: -1em;" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M6 9l6 6l6 -6" />
+                    </svg></a>
+            <div class="dropdown-content nomobile">
+                        <a href="{{ "/ca/dades" | t }}"><em class="icon-crest drop"></em> {{ "Les meves dades" | t }}</a>
+                        <a href="{{ "/ca/contrasenya" | t }}"><em class="icon-crest drop"></em> {{ "Canviar contrasenya" | t }}</a>
+                        <a href="{{ "/user/logout" | t }}"><em class="icon-crest drop"></em> {{ "Tancar sessió" | t }}</a>
+                    </div>
+                </div>
+                <!-- Mobile menu -->
+                <button class="nocomputer" id="open-menu"><svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-menu-2" width="36" height="36" viewBox="0 0 24 24" stroke-width="2" stroke="#4D443D" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M4 6l16 0" />
+                <path d="M4 12l16 0" />
+                <path d="M4 18l16 0" />
+                </svg>
+
+                </button>
+                <div id="modal-menu" class="modal">
+                <div class="modal-content">
+                <span id="close-menu" class="close">&times;</span>
+                <nav>
+                    <ul>
+                    <li><a href="{{ "/ca/proveedores/solicitar-cita" | t }}"><em class="icon-crest drop"></em> {{ "Documentació i cita de contracte" | t }}</a></li>
+                    <li><a href="{{ "/ca/dades" | t }}"><em class="icon-crest drop"></em> {{ "Les meves dades" | t }}</a></li>
+                    <li><a href="{{ "/ca/contrasenya" | t }}"><em class="icon-crest drop"></em> {{ "Canviar contrasenya" | t }}</a></li>
+                    <li><a href="{{ "/user/logout" | t }}"><em class="icon-crest drop"></em> {{ "Tancar sessió" | t }}</a></li>
+                    </ul>
+                    <hr><br>
+                    <p style="text-align:center;"> {{ "Et cal ajut?" | t }} {{ 'Truca al' | t }} <b>938 000 000</b>
+                </nav>
+                </div>
+                </div>
+                <!-- Mobile menu -->
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<script>
+function changeLanguage(lang) {
+  const currentUrl = window.location.href;
+  const newUrl = currentUrl.replace(/\/(es|ca)\//, '/' + lang + '/');
+  window.location.href = newUrl;
+}
+
+const openMenuButton = document.getElementById("open-menu");
+const closeModalButton = document.getElementById("close-menu");
+const modalMenu = document.getElementById("modal-menu");
+const menuIcon = document.getElementById("menu-icon");
+
+function toggleMenuIcon() {
+  const isOpen = menuIcon.classList.contains("icon-tabler-menu-2");
+
+  menuIcon.classList.remove(isOpen ? "icon-tabler-menu-2" : "icon-tabler-x");
+
+  menuIcon.innerHTML = isOpen
+    ? `<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+       <path d="M18 6l-12 12" />
+       <path d="M6 6l12 12" />`
+    : `<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+       <path d="M4 6l16 0" />
+       <path d="M4 12l16 0" />
+       <path d="M4 18l16 0" />`;
+
+  menuIcon.classList.add(isOpen ? "icon-tabler-x" : "icon-tabler-menu-2");
+}
+
+openMenuButton.addEventListener("click", () => {
+  modalMenu.style.display = "block";
+  toggleMenuIcon();
+});
+
+closeModalButton.addEventListener("click", () => {
+  modalMenu.style.display = "none";
+  toggleMenuIcon();
+});
+
+window.addEventListener("click", (event) => {
+  if (event.target === modalMenu) {
+    modalMenu.style.display = "none";
+    toggleMenuIcon();
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var menuItems = document.querySelectorAll('#menu a');
+    var currentPath = window.location.pathname;
+
+    menuItems.forEach(function(item) {
+        var itemPath = new URL(item.getAttribute('href'), window.location.origin).pathname;
+        if (itemPath === currentPath) {
+            item.classList.add('active');
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var menuItems = document.querySelectorAll('#menu a');
+
+    menuItems.forEach(function(item) {
+        if (item.dataset.disable === "true") {
+            item.classList.add('not-clickable');
+            item.addEventListener('click', function(event) {
+                event.preventDefault();
+            });
+        }
+    });
+});
+
+
+</script>

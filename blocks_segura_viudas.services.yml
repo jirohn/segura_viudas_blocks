@@ -1,0 +1,12 @@
+services:
+  blocks_segura_viudas.login_form:
+    class: Drupal\blocks_segura_viudas\Form\LoginForm
+    arguments: ['@authentication_collector']
+    tags:
+      - { name: form, id: Drupal\blocks_segura_viudas\Form\LoginForm }
+  blocks_segura_viudas.change_password_form:
+    class: Drupal\blocks_segura_viudas\Form\ChangePasswordForm
+    tags:
+      - { name: form, id: Drupal\blocks_segura_viudas\Form\ChangePasswordForm }
+
+
