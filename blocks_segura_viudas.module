@@ -70,15 +70,15 @@ function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
  * Implements hook_form_alter().
  */
 function blocks_segura_viudas_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Comprueba si el formulario es el formulario de inicio de sesión de usuario.
   if ($form_id === 'user_login_form') {
-    // Comprueba si el usuario actual tiene el rol de administrador.
-    $is_admin = \Drupal::currentUser()->hasPermission('administer site configuration');
+    // Agregar el manipulador personalizado de envío del formulario de inicio de sesión.
+    $form['#submit'][] = 'blocks_segura_viudas_user_login_submit';
 
-    // Aplica las funciones de validación y envío personalizadas solo si el usuario no es administrador.
-    if (!$is_admin) {
-      $form['#validate'][] = 'blocks_segura_viudas_user_login_validate';
-      $form['#submit'][] = 'blocks_segura_viudas_user_login_submit';
+    // Cambiar el título del campo de nombre de usuario a CIF.
+    if (isset($form['name']['#title'])) {
+      $form['name']['#title'] = t('CIF');
+    } elseif (isset($form['name']['name']['#title'])) {
+      $form['name']['name']['#title'] = t('CIF');
     }
 
     // Cambiar el texto de descripción del campo de nombre de usuario y agregar la clase CSS.
@@ -128,7 +128,7 @@ function blocks_segura_viudas_user_login_submit(&$form, FormStateInterface $form
  */
 function blocks_segura_viudas_user_login_validate(&$form, FormStateInterface $form_state) {
   $cif = $form_state->getValue('name');
-  
+
   // Busca al usuario por field_cif_empresa.
   $users = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties([
     'field_cif_empresa' => $cif,
