@@ -58,6 +58,11 @@ function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
       'template' => 'segura_viudas_changepassword',
       'variables' => ['change_password_form' => NULL],
     ],
+    'segura_viudas_passwordrecovery' => [
+      'template' => 'segura_viudas_passwordrecovery',
+      'variables' => ['password_recovery_form' => NULL],
+    ],
+
   ];
 }
 
@@ -65,15 +70,15 @@ function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
  * Implements hook_form_alter().
  */
 function blocks_segura_viudas_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Comprueba si el formulario es el formulario de inicio de sesión de usuario.
   if ($form_id === 'user_login_form') {
-    // Agregar el manipulador personalizado de envío del formulario de inicio de sesión.
-    $form['#submit'][] = 'blocks_segura_viudas_user_login_submit';
+    // Comprueba si el usuario actual tiene el rol de administrador.
+    $is_admin = \Drupal::currentUser()->hasPermission('administer site configuration');
 
-    // Cambiar el título del campo de nombre de usuario a CIF.
-    if (isset($form['name']['#title'])) {
-      $form['name']['#title'] = t('CIF');
-    } elseif (isset($form['name']['name']['#title'])) {
-      $form['name']['name']['#title'] = t('CIF');
+    // Aplica las funciones de validación y envío personalizadas solo si el usuario no es administrador.
+    if (!$is_admin) {
+      $form['#validate'][] = 'blocks_segura_viudas_user_login_validate';
+      $form['#submit'][] = 'blocks_segura_viudas_user_login_submit';
     }
 
     // Cambiar el texto de descripción del campo de nombre de usuario y agregar la clase CSS.
@@ -136,4 +141,8 @@ function blocks_segura_viudas_user_login_validate(&$form, FormStateInterface $fo
   } else {
     $form_state->setErrorByName('name', t('No se encontró un usuario con ese CIF.'));
   }
+}
+
+function blocks_segura_viudas_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'blocks_segura_viudas/slick_carousel';
 }

@@ -6,7 +6,8 @@
 <div class="banner-1-home">
     <section class="nospace" id="banner" style="background-image: url('{{ file_url('modules/nateevo/segura_viudas_blocks/images/Banner-1.png') }}'); background-size: cover; background-position:center center;">
   <div class="block full left">
-    <div class="block">
+    {% if not logged_in %}
+      <div class="block">
         <a class="rotated-btn" href="#log-in">
           <!-- div rotado 90 grados -->
           <div style="transform: rotate(-90deg); margin-top: 1em; height:100%; color:white;" class="block center middle nomobile">
@@ -14,6 +15,7 @@
           </div>
         </a>
       </div>
+    {% endif %}
 
       <!-- Computer -->
       <div style="background-color: rgba(256,256,256, .8);" class="nomobile block two-thirds left column p-3">
