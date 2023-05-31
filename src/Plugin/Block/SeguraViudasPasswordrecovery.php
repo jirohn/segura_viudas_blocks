@@ -58,14 +58,13 @@ class SeguraViudasPasswordrecovery extends BlockBase implements ContainerFactory
    * {@inheritdoc}
    */
   public function build() {
-    $form = $this->formBuilder->getForm('Drupal\blocks_segura_viudas\Form\PasswordRecoveryForm');
+    $form = $this->formBuilder->getForm('\Drupal\blocks_segura_viudas\Form\PasswordRecoveryForm');
 
     return [
       '#theme' => 'segura_viudas_passwordrecovery',
-      '#content' => [
-        'form' => $form,
-      ],
+      '#recovery_password_form' => $form,
     ];
   }
 
 }
+
