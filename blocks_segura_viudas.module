@@ -3,20 +3,13 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 
-/**
- * Implements hook_theme().
- */
+
 function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
   return [
     'segura_viudas_header' => [
       'variables' => [
       ],
       'template' => 'segura_viudas_header',
-    ],
-    'segura_viudas_headerlogged' => [
-      'variables' => [
-      ],
-      'template' => 'segura_viudas_headerlogged',
     ],
     'segura_viudas_headerlogged' => [
       'variables' => [
@@ -32,19 +25,10 @@ function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
       'template' => 'segura_viudas_login',
       'variables' => ['login_form' => NULL],
     ],
-    'segura_viudas_help' => [
+    'segura_viudas_breadcrumbs' => [
       'variables' => [
       ],
-      'template' => 'segura_viudas_help',
-    ],
-    'segura_viudas_footer' => [
-      'variables' => [
-      ],
-      'template' => 'segura_viudas_footer',
-    ],
-    'segura_viudas_appointment' => [
-      'template' => 'segura_viudas_login',
-      'variables' => ['login_form' => NULL],
+      'template' => 'segura_viudas_breadcrumbs',
     ],
     'segura_viudas_help' => [
       'variables' => [
@@ -81,33 +65,8 @@ function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
     ],
     'segura_viudas_passwordrecovery' => [
       'variables' => ['recovery_password_form' => NULL],
-      'template' => 'segura_viudas_passwordrecovery',
-      'template' => 'segura_viudas_appointment',
+      'template' => 'segura_viudas_passwordrecovery', 
     ],
-    'segura_viudas_profile' => [
-      'variables' => [
-        'user' => NULL,
-      ],
-      'template' => 'segura_viudas_profile',
-    ],
-    'segura_viudas_newpassword' => [
-      'variables' => ['change_password_form' => NULL],
-      'template' => 'segura_viudas_newpassword',
-    ],
-    'segura_viudas_change_password' => [
-      'template' => 'segura_viudas_change_password',
-      'variables' => ['change_password_form' => NULL],
-    ],
-    'segura_viudas_changepassword' => [
-      'template' => 'segura_viudas_changepassword',
-      'variables' => ['change_password_form' => NULL],
-    ],
-    'segura_viudas_passwordrecovery' => [
-      'template' => 'segura_viudas_passwordrecovery',
-      'variables' => ['password_recovery_form' => NULL],
-    ],
-
-
   ];
 }
 
@@ -115,38 +74,47 @@ function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
  * Implements hook_form_alter().
  */
 function blocks_segura_viudas_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
   if ($form_id === 'user_login_form') {
-    // Agregar el manipulador personalizado de envío del formulario de inicio de sesión.
-    $form['#submit'][] = 'blocks_segura_viudas_user_login_submit';
 
-    // Cambiar el título del campo de nombre de usuario a CIF.
-    if (isset($form['name']['#title'])) {
-      $form['name']['#title'] = t('CIF');
-    } elseif (isset($form['name']['name']['#title'])) {
-      $form['name']['name']['#title'] = t('CIF');
+    $request = \Drupal::request();
+    $uri = $request->getRequestUri();
+    if (!preg_match('.^/(es|ca)/user/login.', $uri)) {
+
+      // Agregar el manipulador personalizado de envío del formulario de inicio de sesión.
+      $form['#submit'][] = 'blocks_segura_viudas_user_login_submit';
+
+      // Cambiar el título del campo de nombre de usuario a CIF.
+      if (isset($form['name']['#title'])) {
+        $form['name']['#title'] = t('CIF');
+      } elseif (isset($form['name']['name']['#title'])) {
+        $form['name']['name']['#title'] = t('CIF');
+      }
+
+      // Cambiar el texto de descripción del campo de nombre de usuario y agregar la clase CSS.
+      if (isset($form['name']['#description'])) {
+        $form['name']['#description'] = t('Introdueix el CIF, sense espais ni caràcters especials, en majúscules. Exemple: 43414180A.');
+        $form['name']['#attributes']['class'][] = 'input-info';
+      } elseif (isset($form['name']['name']['#description'])) {
+        $form['name']['name']['#description'] = t('Introdueix el CIF, sense espais ni caràcters especials, en majúscules. Exemple: 43414180A.');
+        $form['name']['name']['#attributes']['class'][] = 'input-info';
+      }
+
+      // Cambiar el texto de descripción del campo de password.
+      if (isset($form['pass']['#description'])) {
+        $form['pass']['#description'] = t('');
+      } elseif (isset($form['pass']['pass1']['#description'])) {
+        $form['pass']['pass1']['#description'] = t('');
+      }
+      // Cambiar el texto del botón de envío.
+      if (isset($form['actions']['submit']['#value'])) {
+        $form['actions']['submit']['#value'] = t('Accedir');
+      }
+      // Añade el validador personalizado al formulario.
+      array_unshift($form['#validate'], 'blocks_segura_viudas_user_login_validate');
+
     }
 
-    // Cambiar el texto de descripción del campo de nombre de usuario y agregar la clase CSS.
-    if (isset($form['name']['#description'])) {
-      $form['name']['#description'] = t('Introdueix el CIF, sense espais ni caràcters especials, en majúscules. Exemple: 43414180A.');
-      $form['name']['#attributes']['class'][] = 'input-info';
-    } elseif (isset($form['name']['name']['#description'])) {
-      $form['name']['name']['#description'] = t('Introdueix el CIF, sense espais ni caràcters especials, en majúscules. Exemple: 43414180A.');
-      $form['name']['name']['#attributes']['class'][] = 'input-info';
-    }
-
-    // Cambiar el texto de descripción del campo de password.
-    if (isset($form['pass']['#description'])) {
-      $form['pass']['#description'] = t('');
-    } elseif (isset($form['pass']['pass1']['#description'])) {
-      $form['pass']['pass1']['#description'] = t('');
-    }
-    // Cambiar el texto del botón de envío.
-    if (isset($form['actions']['submit']['#value'])) {
-      $form['actions']['submit']['#value'] = t('Accedir');
-}
-    // Añade el validador personalizado al formulario.
-    array_unshift($form['#validate'], 'blocks_segura_viudas_user_login_validate');
   }
 }
 
@@ -167,6 +135,17 @@ function blocks_segura_viudas_user_login_submit(&$form, FormStateInterface $form
 
   $form_state->setRedirectUrl($url);
 }
+
+/**
+ * Implements hook_preprocess_HOOK() for page templates.
+ */
+function blocks_segura_viudas_preprocess_page(&$variables) {
+  if (\Drupal::routeMatch()->getRouteName() == 'blocks_segura_viudas.password_recovery') {
+    $form = \Drupal::formBuilder()->getForm('Drupal\\blocks_segura_viudas\\Form\\PasswordRecoveryForm');
+    $variables['password_recovery_form'] = $form;
+  }
+}
+
 
 /**
  * Custom validator for user login form.

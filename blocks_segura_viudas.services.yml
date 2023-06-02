@@ -8,5 +8,15 @@ services:
     class: Drupal\blocks_segura_viudas\Form\ChangePasswordForm
     tags:
       - { name: form, id: Drupal\blocks_segura_viudas\Form\ChangePasswordForm }
+  blocks_segura_viudas.password_recovery_form:
+    class: Drupal\blocks_segura_viudas\Form\RecoveryPasswordForm
+    tags:
+      - { name: form, id: Drupal\blocks_segura_viudas\Form\PasswordRecoveryForm }
+  segura_viudas_recovery_form:
+     class: Drupal\segura_viudas\Form\SeguraViudasRecoveryForm
+     arguments: []
+     tags:
+       - { name: form, id: Drupal\blocks_segura_viudas\Form\SeguraViudasRecoveryForm }
+
 
 

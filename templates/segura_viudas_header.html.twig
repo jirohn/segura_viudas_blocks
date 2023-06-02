@@ -22,7 +22,7 @@
             <a href="{{ "/ca/inicio" | t }}"><img src="{{ file_url('modules/nateevo/segura_viudas_blocks/images/logo_SV.png') }}"></a>
         </div>
         <div>
-            <a class="main-link" href="#log-in">{{ "Iniciar sessió" | t }}</a>
+            <a class="main-link" href="{{ '/ca/inici#log-in' | t }}">{{ "Iniciar sessió" | t }}</a>
         </div>
     </div>
 </section>
@@ -30,8 +30,25 @@
 
 <script>
 function changeLanguage(lang) {
-  const currentUrl = window.location.href;
-  const newUrl = currentUrl.replace(/\/(es|ca)\//, '/' + lang + '/');
+  const currentUrl = new URL(window.location.href);
+  const pathnameParts = currentUrl.pathname.split('/').filter(part => part);
+
+  if (pathnameParts.length === 0) {
+    // Si no hay ruta después del dominio, redirige a la ruta del idioma seleccionado
+    window.location.href = currentUrl.origin + '/' + lang;
+    return;
+  }
+
+  if (pathnameParts[0] === 'es' || pathnameParts[0] === 'ca') {
+    // Si la primera parte de la ruta es un código de idioma, cámbialo
+    pathnameParts[0] = lang;
+  } else {
+    // Si la primera parte de la ruta no es un código de idioma, añade el idioma seleccionado
+    pathnameParts.unshift(lang);
+  }
+
+  const newUrl = currentUrl.origin + '/' + pathnameParts.join('/');
   window.location.href = newUrl;
 }
+
 </script>

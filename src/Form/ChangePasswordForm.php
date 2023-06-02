@@ -95,6 +95,6 @@ class ChangePasswordForm extends FormBase {
     $account = User::load(\Drupal::currentUser()->id());
     $account->setPassword($form_state->getValue('new_password'));
     $account->save();
-    $this->messenger()->addMessage($this->t('La contraseña ha sido cambiada exitosamente.'));
+    $form_state->setRebuild(TRUE);
   }
 }

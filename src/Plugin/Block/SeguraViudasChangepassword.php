@@ -23,6 +23,7 @@ class SeguraViudasChangepassword extends BlockBase {
     return [
       '#theme' => 'segura_viudas_changepassword',
       '#change_password_form' => $form,
+      '#form_state' => $form['#form_state'],
     ];
-  }  
+}  
 }
