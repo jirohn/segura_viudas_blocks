@@ -99,8 +99,8 @@ function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
       'variables' => ['change_password_form' => NULL],
     ],
     'segura_viudas_changepassword' => [
-      'template' => 'segura_viudas_changepassword',
       'variables' => ['change_password_form' => NULL],
+      'template' => 'segura_viudas_changepassword',
     ],
     'segura_viudas_passwordrecovery' => [
       'variables' => ['recovery_password_form' => NULL],

@@ -9,13 +9,13 @@ use Drupal\user\Entity\User;
 class ChangePasswordForm extends FormBase {
 
   public function getFormId() {
-    return 'mi_change_password_form';
+    return 'change_password_form';
   }
 
   public function buildForm(array $form, FormStateInterface $form_state) {
 
     $form['#attributes']['style'] = 'margin-top:2em;';
-  
+
     $form['old_password'] = [
       '#type' => 'password',
       '#title' => $this->t('CONTRASENYA ACTUAL'),
@@ -27,7 +27,7 @@ class ChangePasswordForm extends FormBase {
       '#prefix' => '<div class="password-container">',
       '#suffix' => '</div>',
     ];
-  
+
     $form['new_password'] = [
       '#type' => 'password_confirm',
       '#size' => 25,
@@ -40,30 +40,28 @@ class ChangePasswordForm extends FormBase {
       '#prefix' => '<div class="password-container">',
       '#suffix' => '</div><br><br>',
     ];
-    $this->messenger()->addMessage($this->t('La contraseña ha sido cambiada exitosamente.'));
+
+    // Eliminada la línea de mensaje aquí
 
     $form['cancel_button'] = [
       '#type' => 'markup',
       '#markup' => '<a href="' . $this->t('/ca/inici') . '" class="secondary-sub nomobile" type="submit"><em class="icon-crest"></em>' . $this->t('CANCEL·LAR') . '</a>',
     ];
-  
+
     $form['actions'] = [
       '#type' => 'actions',
     ];
-  
-    $form['actions']['submit'] = [
-      '#type' => 'button', // Mantén 'button' en lugar de 'submit'
+
+    /*$form['actions']['submit'] = [
+      '#type' => 'submit', // Cambiado a 'submit'
       '#value' => $this->t('CONFIRMAR'),
       '#attributes' => [
         'style' => 'display: inline-flex;',
         'class' => ['nomobile'],
-        'id' => 'icon-submit', // Agrega un atributo 'id'
-        'onclick' => 'document.querySelector(\'form\').submit();', // Agrega un atributo 'onclick'
+        'id' => 'icon-submit',
       ],
     ];
-    
-    
-  
+
     $form['actions']['submit_mobile'] = [
       '#type' => 'submit',
       '#value' => $this->t('CONFIRMAR'),
@@ -72,29 +70,63 @@ class ChangePasswordForm extends FormBase {
         'class' => ['nocomputer'],
         'style' => 'width:100%; display:block;',
       ],
-    ];
-    
-  
+    ];*/
+    $form['actions'] = array('#type' => 'actions');
+
+    $form['actions']['submit'] = array(
+      '#type' => 'submit',
+      '#value' => $this->t('Submit'),
+      '#button_type' => 'primary',
+    );
+
     $form['actions']['cancel_mobile'] = [
       '#type' => 'markup',
       '#markup' => '<a href="' . $this->t('/ca/inici') . '"class="secondary-sub nocomputer" style="text-align:center; display:block;"><em class="icon-crest"></em>' . $this->t('CANCEL·LAR') . '</a>',
     ];
-  
+
     return $form;
   }
-  
+
 
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $account = User::load(\Drupal::currentUser()->id());
-    if (!\Drupal::service('password')->check($form_state->getValue('old_password'), $account->getPassword())) {
+    $password_service = \Drupal::service('password');
+    \Drupal::logger('segura_viudas_blocks')->notice('validando contraseña');
+
+    if (!$password_service->check($form_state->getValue('old_password'), $account->getPassword())) {
+      // Agrega un mensaje de error si la contraseña actual es incorrecta.
+      $this->messenger()->addMessage($this->t('La contraseña actual es incorrecta.'), 'error');
       $form_state->setErrorByName('old_password', $this->t('La contraseña actual es incorrecta.'));
+      \Drupal::logger('segura_viudas_blocks')->notice('La contraseña actual es incorrecta.');
+      // hacemos un echo con un div con la id 'popup incorrecto' y le ponemos un h1 que diga Contraseña incorrecta
+      echo '<div id="popup_incorrecto"><h1>Contraseña incorrecta</h1></div>';
+
+      return;
+    }
+
+    $new_password_values = $form_state->getValue('new_password');
+    if (is_array($new_password_values) && ($new_password_values['pass1'] !== $new_password_values['pass2'])) {
+      // Agrega un mensaje de error si las contraseñas no coinciden.
+      $this->messenger()->addMessage($this->t('La nueva contraseña y la confirmación no coinciden.'), 'error');
+      $form_state->setErrorByName('new_password', $this->t('La nueva contraseña y la confirmación no coinciden.'));
+      \Drupal::logger('segura_viudas_blocks')->notice('La nueva contraseña y la confirmación no coinciden.');
+
+      return;
     }
   }
 
+
+
+
+
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $this->messenger()->addMessage($this->t('La contraseña ha sido cambiada exitosamente.'), 'status');
+    \Drupal::logger('segura_viudas_blocks')->notice('La contraseña ha sido cambiada exitosamente.');
     $account = User::load(\Drupal::currentUser()->id());
     $account->setPassword($form_state->getValue('new_password'));
     $account->save();
-    $this->messenger()->addMessage($this->t('La contraseña ha sido cambiada exitosamente.'));
+
+    // Agrega un mensaje de éxito.
   }
 }
+

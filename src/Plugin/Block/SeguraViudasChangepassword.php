@@ -6,7 +6,7 @@ use Drupal\Core\Block\BlockBase;
 
 /**
  * Provides a custom block for Segura Viudas ChangePassword.
-app/web/modules/segura_viudas_blocks/src/Plugin/Block/seguraViudasHeader.php *
+ * app/web/modules/segura_viudas_blocks/src/Plugin/Block/seguraViudasHeader.php *
  * @Block(
  *   id = "segura_viudas_changepassword",
  *   admin_label = @Translation("Segura Viudas Changepassword"),
@@ -24,5 +24,5 @@ class SeguraViudasChangepassword extends BlockBase {
       '#theme' => 'segura_viudas_changepassword',
       '#change_password_form' => $form,
     ];
-  }  
+  }
 }
