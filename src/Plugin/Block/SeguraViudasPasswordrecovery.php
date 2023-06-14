@@ -67,4 +67,3 @@ class SeguraViudasPasswordrecovery extends BlockBase implements ContainerFactory
   }
 
 }
-

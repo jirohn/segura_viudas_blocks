@@ -83,6 +83,12 @@ class ChangePasswordForm extends FormBase {
       '#type' => 'markup',
       '#markup' => '<a href="' . $this->t('/ca/inici') . '"class="secondary-sub nocomputer" style="text-align:center; display:block;"><em class="icon-crest"></em>' . $this->t('CANCEL·LAR') . '</a>',
     ];
+    $passwordChanged = \Drupal::request()->query->get('passwordChanged') == 'true';
+    $form_state = $passwordChanged ? 'true' : 'false';
+    \Drupal::logger('my_module')->notice('passwordChanged: ' . var_export($passwordChanged, TRUE));
+
+    // enviamos la variable form_state a la plantilla
+    //$form['form_state'] = $form_state;
 
     return $form;
   }
@@ -95,23 +101,18 @@ class ChangePasswordForm extends FormBase {
 
     if (!$password_service->check($form_state->getValue('old_password'), $account->getPassword())) {
       // Agrega un mensaje de error si la contraseña actual es incorrecta.
-      $this->messenger()->addMessage($this->t('La contraseña actual es incorrecta.'), 'error');
       $form_state->setErrorByName('old_password', $this->t('La contraseña actual es incorrecta.'));
       \Drupal::logger('segura_viudas_blocks')->notice('La contraseña actual es incorrecta.');
       // hacemos un echo con un div con la id 'popup incorrecto' y le ponemos un h1 que diga Contraseña incorrecta
-      echo '<div id="popup_incorrecto"><h1>Contraseña incorrecta</h1></div>';
-
-      return;
+      echo '<div id="popup_incorrecto"><h1>Contraseña incorrecta (Meter aqui el popup)</h1></div>';
     }
 
     $new_password_values = $form_state->getValue('new_password');
     if (is_array($new_password_values) && ($new_password_values['pass1'] !== $new_password_values['pass2'])) {
       // Agrega un mensaje de error si las contraseñas no coinciden.
-      $this->messenger()->addMessage($this->t('La nueva contraseña y la confirmación no coinciden.'), 'error');
       $form_state->setErrorByName('new_password', $this->t('La nueva contraseña y la confirmación no coinciden.'));
       \Drupal::logger('segura_viudas_blocks')->notice('La nueva contraseña y la confirmación no coinciden.');
-
-      return;
+      echo '<div id="popup_incorrecto"><h1>Contraseñas diferentes (Meter aqui el popup)</h1></div>';
     }
   }
 
@@ -121,12 +122,14 @@ class ChangePasswordForm extends FormBase {
 
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->messenger()->addMessage($this->t('La contraseña ha sido cambiada exitosamente.'), 'status');
-    \Drupal::logger('segura_viudas_blocks')->notice('La contraseña ha sido cambiada exitosamente.');
+
     $account = User::load(\Drupal::currentUser()->id());
     $account->setPassword($form_state->getValue('new_password'));
     $account->save();
 
-    // Agrega un mensaje de éxito.
-  }
+    $url = \Drupal\Core\Url::fromRoute('<current>');
+    $form_state->setRedirectUrl($url->setOption('query', ['passwordChanged' => 'true']));
+}
+
 }
 

@@ -18,15 +18,21 @@ class PasswordRecoveryForm extends FormBase {
       '#type' => 'textfield',
       '#title' => $this->t('CIF'),
       '#required' => TRUE,
+      '#description' => '<span>' . $this->t('Introdueix el CIF sense espais ni caràcters especials i en majúscules. Exemple: 43414180A') . '</span>',
     ];
 
     $form['actions'] = [
       '#type' => 'actions',
     ];
 
+    $form['actions']['cancel_mobile'] = [
+      '#type' => 'markup',
+      '#markup' => '<a href="' . $this->t('/ca/inici') . '"class="secondary-sub" style="text-align:center; display:block; margin-right:.5em;"><em class="icon-crest"></em>' . $this->t('CANCEL·LAR') . '</a>',
+    ];
+
     $form['actions']['submit'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Enviar correo de recuperación'),
+      '#value' => $this->t('Confirmar'),
     ];
 
     return $form;

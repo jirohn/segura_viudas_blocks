@@ -61,28 +61,12 @@ function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
       ],
       'template' => 'segura_viudas_appointment',
     ],
-    'segura_viudas_profile' => [
-      'variables' => [
-        'user' => NULL,
-      ],
-      'template' => 'segura_viudas_profile',
-    ],
-    'segura_viudas_newpassword' => [
-      'variables' => ['change_password_form' => NULL],
-      'template' => 'segura_viudas_newpassword',
-    ],
-    'segura_viudas_change_password' => [
-      'template' => 'segura_viudas_change_password',
-      'variables' => ['change_password_form' => NULL],
-    ],
     'segura_viudas_changepassword' => [
+      'variables' => [
+        'form_state' => NULL,
+        'change_password_form' => NULL,
+      ],
       'template' => 'segura_viudas_changepassword',
-      'variables' => ['change_password_form' => NULL],
-    ],
-    'segura_viudas_passwordrecovery' => [
-      'variables' => ['recovery_password_form' => NULL],
-      'template' => 'segura_viudas_passwordrecovery',
-      'template' => 'segura_viudas_appointment',
     ],
     'segura_viudas_profile' => [
       'variables' => [
@@ -91,16 +75,9 @@ function blocks_segura_viudas_theme($existing, $type, $theme, $path) {
       'template' => 'segura_viudas_profile',
     ],
     'segura_viudas_newpassword' => [
-      'variables' => ['change_password_form' => NULL],
+      'variables' => ['change_password_form' => NULL
+      ],
       'template' => 'segura_viudas_newpassword',
-    ],
-    'segura_viudas_change_password' => [
-      'template' => 'segura_viudas_change_password',
-      'variables' => ['change_password_form' => NULL],
-    ],
-    'segura_viudas_changepassword' => [
-      'variables' => ['change_password_form' => NULL],
-      'template' => 'segura_viudas_changepassword',
     ],
     'segura_viudas_passwordrecovery' => [
       'variables' => ['recovery_password_form' => NULL],
